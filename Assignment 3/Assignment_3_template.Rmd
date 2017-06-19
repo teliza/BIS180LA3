@@ -1,0 +1,422 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+__Name:__ Eliza Tsang
+
+__Student ID:__ 999606858
+
+For each of the exercises below, take advantage of R markdown and the notebook features.  That is include the code and have Rstudio embed your answers.  See Exercise 0 for an example
+
+
+## Exercise 0 (example)
+_Provide the name of your current working directory and list the files therein_
+```{r}
+getwd()
+dir()
+```
+
+(You would then click on the > arrow in your answer code block to run it before continuing)
+
+## Exercise 1
+_Use sum() to determine the sum of numbers from 2000 to 20000.  Provide your code and the actual sum in your answer._
+
+```{r} 
+sum(200:2000)
+```
+Answer: 1981100
+
+## Exercise 2
+_In one or two sentences, describe what the above code snippet it did._
+
+The first two lines commanded that numbers be entered and saved into a variable. (Enter the number 5 into a; enter the numbers from 2 to 20 into b). The next two lines asked to display the variables (list a and list b).
+
+## Exercise 3
+_Add the contents of a and b together and place the results in a new object.  Examine the result.  Include your code.  Try using both `sum()` and `+`; do you get different results?  If so, why?_
+
+```{r}
+a<-5
+b<-2:20
+a
+b
+```
+[1] 5
+ [1]  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+```{r}
+a+b
+sum(a,b)
+```
+ [1]  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+[1] 214
+
+The results are different:
+
+Because b is a vector with more dimensions than a, using + treated all the variables in b as separate. It had to repeat the number in a to match the dimentions in b. 
+
+For sum(), it comprehensively added all of the numbers in b and a.
+
+## Exercise 4
+_What is the sum of the 5th through 10th element of object b?  Provide your code and the sum._
+
+```{r}
+sum(b[5:10])
+```
+[1] 51
+
+## Exercise 5
+_What is the sum of the 3rd, 8th, and 10th element of b?  For both of these exercises should only need to have "b" in your code once._
+```{r}
+sum(b[c(3,8,10)])
+```
+[1] 24
+
+## Exercise 6
+_When extracting from a 2-dimensional object, which number specifies rows and which specifies columns?_
+
+```{r}
+m<-matrix(data=1:25,ncol=5,byrow=T)
+m
+m[5,5]
+```
+
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    2    3    4    5
+[2,]    6    7    8    9   10
+[3,]   11   12   13   14   15
+[4,]   16   17   18   19   20
+[5,]   21   22   23   24   25
+[1] 25
+
+ncol is the column
+nrow is for the rows
+[row, column]
+
+_What does `m[3,]` do?_
+
+```{r}
+m[3,]
+```
+
+[1] 11 12 13 14 15
+It goes to the 3rd row of your matrix and displays it.
+
+_How can you extract the 3rd, 4th and 5th columns of m together as one object?_
+
+```{r}
+m[,3:5]
+```
+
+    [,1] [,2] [,3]
+[1,]    3    4    5
+[2,]    8    9   10
+[3,]   13   14   15
+[4,]   18   19   20
+[5,]   23   24   25
+
+## Exercise 7
+_What does the cbind command do?  How about rbind?_
+
+```{r}
+cbind(m,101:105)
+```
+
+     [,1] [,2] [,3] [,4] [,5] [,6]
+[1,]    1    2    3    4    5  101
+[2,]    6    7    8    9   10  102
+[3,]   11   12   13   14   15  103
+[4,]   16   17   18   19   20  104
+[5,]   21   22   23   24   25  105
+
+cbind combines the vectors and matrices by their columns (or adds a column of numbers you specify).
+rbind combines them by rows.
+
+_Create a new object "n" where the first row is a new row of numbers (your choice) and the following rows are the followed by the m matrix._
+
+```{r}
+n<-c(4,6,7,12,98)
+o<-rbind(n,m)
+o
+```
+
+  [,1] [,2] [,3] [,4] [,5]
+n    4    6    7   12   98
+     1    2    3    4    5
+     6    7    8    9   10
+    11   12   13   14   15
+    16   17   18   19   20
+    21   22   23   24   25
+
+(The matrix doesn't format properly without a table)
+
+## Exercise 8
+
+```{r}
+fly.worm<- read.delim("~/Downloads/fly_worm_blast.out.gz",header=F)
+```
+
+```{r}
+head(fly.worm)
+summary(fly.worm)
+```
+
+```{r}
+colnames(fly.worm) <- c("query_id",
+                        "subject_id",
+                        "pct_ident",
+                        "len",
+                        "mis",
+                        "gaps",
+                        "qb",
+                        "qe",
+                        "sb",
+                        "se",
+                        "E",
+                        "Score")
+head(fly.worm)
+summary(fly.worm)
+```
+
+_How many hits have an e-value of 0?_
+
+```{r}
+fly.worm$E==0
+sum(fly.worm$E==0)
+```
+The first one shows all True and False values. In this case, if the number is 0, it is true.
+Assuming True=1 and False=0, the second command adds all the True's and so we get the amount of all the E values that are 0.
+
+[1] 2443
+
+_How many have hits have a percent identity > 50?_
+
+```{r}
+sum(fly.worm$pct_ident>50)
+```
+
+[1] 5271
+
+_Recalculate the above values but in percentage of hits rather than absolute values._
+
+```{r}
+length(fly.worm$E)
+2443/34874
+```
+
+[1] 34874
+[1] 0.07005219 = about 7%
+
+```{r}
+5271/length(fly.worm$pct_ident)
+5271/34874
+```
+[1] 0.1511441
+[1] 0.1511441 = about 15%
+
+(Both commands work)
+
+_How many hits have an E-value of 0 and have a percent identity less than 50?_
+
+```{r}
+sum((fly.worm$E==0) & (fly.worm$pct_ident<50))
+```
+
+[1] 948
+
+_What is the minimum percent identity of the hits with an E-value equal to 0?_
+
+```{r}
+fly.worm[fly.worm$E==0,]
+fw<-fly.worm[fly.worm$E==0,]
+sort(fw$pct_ident)
+```
+
+We find all the rows that contain the E column value 0.
+Saved the contents into another data set file.
+Sort it from lowest to greatest value.
+
+24.07 is the minimum value.
+
+## Excercise 9
+_Are you surprised that sequences with relatively low percent identity can still have an E-value of 0?_
+Yes, you'd think that at face value, the chances of getting such a relatively low percent would be higher.
+
+_State a hypothesis about what alignment properties might produce a zero E-value even when the percent identity is less than 50%._
+The score is a result of factors such as amino acid composition, alignment length, and amount of gaps. Even if the identity is less than 50%, the score may be sufficient to be significant enough to have a zero E-value.
+
+_Test your hypothesis_
+
+We can sort all the columns by score in both the fly.worm data and my "fw" data set. Then we can compare the scores to see how high the zero E-value scores are in relation to the whole data.
+
+```{r}
+fly.worm2<-sort(fly.worm$Score)
+fw2<-sort(fw$Score)
+tail(fly.worm2)
+tail(fw2)
+```
+
+[1] 5237 5238 5239 5239 5241 5242
+[1] 5237 5238 5239 5239 5241 5242
+
+We see that the highest scores match meaning that for zero E-value alignments, the components that result in the score is significant.
+
+## Excercise 10
+_It sometimes is useful to create a random subset of a large data set like the fly.worm results.  Create a new dataframe `fly.worm.small` that has 1,000 rows taken at random from the larger data set._
+
+```{r}
+fly.worm.small<-fly.worm[sample(nrow(fly.worm), 1000),]
+```
+
+## Exercise 11
+_Use the `summary()` and `head()` functions to examine the stereotypes object._
+
+```{r}
+stereotypes <-read.csv("~/Downloads/stereotypes.csv")
+summary(stereotypes)
+head(stereotypes)
+```
+
+_Record the answers to the "activity break sections" from Ciera's visualiztion tutorial here:_ 
+
+1. 
+```{r}
+nerdsandmetalheads<-subset(stereotypes, population=="nerd" | population=="metalheads")
+```
+
+2. 
+```{r}
+hipsters<-subset(stereotypes, population=="hipster")
+hipstermales<-subset(hipsters, gender=="male")
+hipsterbingedrink<-subset(hipstermales, beer > 25)
+hipsterbingeeats<-subset(hipsterbingedrink, tacos >20)
+```
+4 observations (4 hipsters)
+
+```{r}
+metalheads<-subset(stereotypes, population=="metalhead")
+mhmales<-subset(metalheads, gender=="male")
+mhbingedrink<-subset(mhmales, beer > 25)
+mhbingeeats<-subset(mhbingedrink, tacos >20)
+```
+68 observations (68 metalheads)
+
+There are more metalheads than hipsters who binge drink beer and binge eat tacos.
+
+3. Do females or males shower more often on average?
+```{r}
+fem<-subset(stereotypes, gender == "female")
+mal<-subset(stereotypes, gender=="male")
+mean(fem$shower)
+mean(mal$shower)
+```
+[1] 7.3275
+[1] 5.884712
+
+Females, on average, shower more often than males per week.
+
+4. Find the word or value in the file.
+
+__Visualization with ggplot2___
+
+1.View the distribution of showers. Color by population.
+```{r}
+qplot(shower, data=stereotypes, geom="density",alpha = I(0.5), fill=population)
+```
+2.View the distribution of beer consumption and color by gender.
+```{r}
+qplot(beer, data=stereotypes, geom="density",alpha = I(0.5), fill=gender)
+```
+3.Find a way to create a plot using the the geom violin with the stereotype data set.
+```{r}
+s<-ggplot(data=stereotypes, aes(x=population, y=shower)) + geom_violin()
+s
+```
+
+__Combining Subset with Visualization__
+
+1.Make a graph that visually describes the difference between beer consumption between gender in the nerd category.
+
+```{r}
+nerds<- subset(stereotypes, population == "nerd")
+ggplot(data=nerds, aes( x=gender, y=beer, colour=gender)) +geom_boxplot()
+ggplot(data=stereotypes, aes(x=gender, y=beer)) +geom_boxplot()
+```
+The last command is the control/comparison group that has all the populations.
+
+
+2.Using theggplot2 documentation, explore three different geoms, using either the full data set or a subset of the data. Tell me something interesting about the data.
+
+```{r}
+ggplot(stereotypes, aes(beer, tacos, color = population, shape = gender)) + geom_point()
+males<- subset(stereotypes, gender == "male")
+females<- subset(stereotypes, gender == "female")
+ggplot(data=males, aes( x=population, y=computer, colour=population)) +geom_boxplot()
+ggplot(data=females, aes( x=population, y=computer, colour=population)) +geom_boxplot()
+
+ggplot(data=stereotypes, aes( x=gender, y=computer, colour=population)) +geom_boxplot()
+```
+All males, except male nerds, on average spend more time than their female population counterparts on the computer.
+
+3.From your exploration of the stereotypes data make three hypotheses about the data.
+
+Nerds stay indoors more often on the computer and so they have more immediate access to the shower.
+
+Tacos and Beer are meant to be together (they're offered at the same places).
+
+Computers are usually marketed to males, so they usually spend more time on the computers.
+
+__Visualization with the ggplot() function__
+
+1.With the p base layer, make a unique plot by adding additional layers.
+```{r}
+p <- ggplot(stereotypes, aes(shower, fill = gender))
+p+ geom_histogram(binwidth=5,position = "dodge") +facet_grid(~age)
+```
+
+2.Make new base layer. Explore what the difference is between color = and fill =. Use your own words to discern the difference.
+```{r}
+p <- ggplot(stereotypes, aes(tacos, fill = gender))+geom_histogram()
+p2 <- ggplot(stereotypes, aes(tacos, colour = gender))+geom_histogram()
+p
+p2
+```
+*fill* fills the whole bar with color
+*colour* just assigns color to the variables but it doesn't necessarily completely fill it in.
+
+__Visualization with the ggplot() function with more color adjustments__
+
+Read about and use the following modifiers correctly with the any portion of the sterotypes dataset you want.
+
+1.Modify color with scale_color_hue()
+```{r}
+ggplot(stereotypes, aes(beer, tacos, color = population, shape = gender)) + 
+    geom_point()
+```
+
+2.Make a tricked out box plot using the stereotypes data. Use at least 3 of the aesthetic options available for geom_boxplot. Use ggplot2 boxplot documentation for guidance.
+```{r}
+ggplot(stereotypes, aes(age, tacos, color = population)) + 
+    geom_boxplot(outlier.color = "red",notch=TRUE)+scale_fill_hue()+facet_grid(~population)
+```
+
+## Exercise 12
+_Use ggplot to explore the relationship between score ("Score") and alignment length("len").  Provide a plot that illustrates the relationship and describe the relationship in words._
+```{r}
+ggplot(fly.worm, aes(len,Score))+geom_point()
+```
+Roughly, it looks like alignment length and score are positively correlated, but the variance seems fairly large. The variance is especially strong with lengths under 2000.
+
+## Excercise 13
+_While you might expect that BLAST results with long alignments would have high scores, this is not always the case.  Form a hypothesis as to what might influence the relationship between alignment length and score.  Use ggplot to make a new plot to explore this hypothesis.  Does the plot support your hypothesis or not?  State your hypothesis, provide the code for your plot, and state your conclusion._
+The amount of gaps affect the score, so perhaps short alignments with fewer gaps yield higher scores.
+
+```{r}
+ggplot(fly.worm.small, aes(len, Score, color=gaps)) + geom_point()
+```
+Based on the graph, there is a small group between 1000-2000 length with a lot of gaps that also have low scores, supporting my hypothesis. However, despite varying gap amounts, relatively long lengths(over 2000) still have relatively high scores. Low length alignments with low amount of gaps can range from low scoring to high scoring, so there must be something else affecting this relationship. My hypothesis does not completely explain the pattern.
+
+** Turning in the assignment**
+
+* Click the "Preview" Button to generate an up-to-date html version of your notebook.  Check it to make sure you are happy with its content.
+* add your .Rmd and .nb.html files to the repository and commit the changes.
+* push the changes

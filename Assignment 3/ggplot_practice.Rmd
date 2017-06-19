@@ -1,0 +1,69 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(ggplot2) #load the library
+data(msleep) #load a data set on mamallian sleep patterns
+str(msleep)
+```
+
+Asthetics *aes()* contorl how data is mapped onto plot
+  eg: aes(x=age, y=height, shape=gender)
+Geometries *geom_* specify type of plot
+  eg: geom_points()
+  
+Want a **scatterplot** b/t sleep and brainweight
+```{r}
+pl<- ggplot(data = msleep, mapping= aes(x=brainwt, y=sleep_total))
+pl<- pl +geom_point()
+pl
+```
+
+```{r}
+pl<- ggplot(data = msleep, mapping= aes(x=brainwt, y=sleep_total))
+pl<- pl +geom_point()
+pl
+pl+scale_x_log10()
+```
+*pl + scale* just shows the plot plus that modification
+To permanently modify object, have to assign modification.
+
+```{r}
+pl<- ggplot(data = msleep, mapping= aes(x=brainwt, y=sleep_total))
+pl<- pl +geom_point()
+pl<-pl+ scale_x_log10()
+pl
+```
+
+```{r}
+pl<- ggplot(data = msleep, mapping= aes(x=brainwt, y=sleep_total))
+pl<- pl +geom_point()
+pl<-pl+ scale_x_log10()
+pl<- pl+ aes(color=vore)
+pl
+```
+
+This colors the points by another column in the data, such as "vore" in this example.
+
+```{r}
+pl2<-ggplot(data=msleep, mapping=aes(x=bodywt, y=sleep_total))
+pl2<-pl2+geom_point()
+pl2<-pl2+scale_x_log10()
+pl2
+```
+
+**BoxPlots**
+```{r}
+bl<-ggplot(data=msleep, mapping=aes(x=vore, y=sleep_rem))
+bl<- bl+geom_boxplot()
+bl
+```
+
+
+```{r}
+bl<-ggplot(data=msleep, mapping=aes(x=vore, y=sleep_rem))
+bl<- bl+geom_boxplot()
+bl2<- bl +geom_point(position=position_jitter(width=.3))
+bl2
+```
